@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: samba
+  labels:
+    app: samba
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: samba
+  template:
+    metadata:
+      labels:
+        app: samba
+    spec:
+      containers:
+        - name: samba
+          image: ubuntu:24.04
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              apt-get update && \
+              DEBIAN_FRONTEND=noninteractive apt-get install -y samba && \
+              mkdir -p /data/uploads && \
+              useradd -M -s /sbin/nologin sambauser && \
+              echo "sambauser:password" | chpasswd && \
+              (echo password; echo password) | smbpasswd -a -s sambauser && \
+              cat <<EOF > /etc/samba/smb.conf
+              [global]
+                workgroup = WORKGROUP
+                server string = Samba Server
+                security = user
+                map to guest = bad user
+                dns proxy = no
+                load printers = no
+                log file = /var/log/samba/%m.log
+                max log size = 50
+
+              [Uploads]
+                path = /data/uploads
+                browsable = yes
+                writable = yes
+                guest ok = no
+                valid users = sambauser
+              EOF
+              service smbd start && tail -f /dev/null
+          ports:
+            - containerPort: 445
+              name: smb
+          volumeMounts:
+            - name: uploads
+              mountPath: /data/uploads
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: photoprism-uploads
