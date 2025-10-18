@@ -167,7 +167,7 @@ persistence:
   storage:
     enabled: true
     size: 50Gi
-    storageClass: default
+    storageClass: longhorn
     accessModes:
       - ReadWriteOnce
     mountPath: /photoprism/storage
@@ -176,7 +176,7 @@ persistence:
   originals:
     enabled: true
     size: 250Gi
-    storageClass: default
+    storageClass: longhorn
     accessModes:
       - ReadWriteOnce
     mountPath: /photoprism/originals
@@ -185,7 +185,7 @@ persistence:
   import:
     enabled: true
     size: 25Gi
-    storageClass: default
+    storageClass: longhorn
     accessModes:
       - ReadWriteOnce
     mountPath: /photoprism/import
