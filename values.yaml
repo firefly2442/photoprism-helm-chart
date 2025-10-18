@@ -194,7 +194,7 @@ env:
   - name: PHOTOPRISM_DATABASE_DRIVER
     value: "mysql"
   - name: PHOTOPRISM_DATABASE_SERVER
-    value: "{{ include "photoprism.fullname" . }}-mariadb:3306"
+    value: "photoprism-mariadb:3306"
   - name: PHOTOPRISM_DATABASE_NAME
     value: "photoprism"
   - name: PHOTOPRISM_DATABASE_USER
@@ -202,5 +202,5 @@ env:
   - name: PHOTOPRISM_DATABASE_PASSWORD
     valueFrom:
       secretKeyRef:
-        name: {{ include "photoprism.fullname" . }}-db-secret
+        name: photoprism-db-secret
         key: mariadb-password
