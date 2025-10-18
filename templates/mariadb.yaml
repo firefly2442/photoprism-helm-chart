@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "photoprism.fullname" . }}-mariadb
+  labels:
+    app: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:11
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "photoprism.fullname" . }}-db-secret
+                  key: mariadb-root-password
+            - name: MYSQL_DATABASE
+              value: photoprism
+            - name: MYSQL_USER
+              value: photoprism
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "photoprism.fullname" . }}-db-secret
+                  key: mariadb-password
+          ports:
+            - name: mysql
+              containerPort: 3306
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mariadb-data
+          persistentVolumeClaim:
+            claimName: {{ include "photoprism.fullname" . }}-mariadb
