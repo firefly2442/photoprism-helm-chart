@@ -204,3 +204,8 @@ env:
       secretKeyRef:
         name: photoprism-db-secret
         key: mariadb-password
+  - name: PHOTOPRISM_ADMIN_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: photoprism-admin-secret
+        key: admin-password
