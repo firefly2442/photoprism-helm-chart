@@ -24,7 +24,7 @@ spec:
           args:
             - |
               apt-get update && \
-              DEBIAN_FRONTEND=noninteractive apt-get install -y samba && \
+              DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends samba && \
               mkdir -p /data/uploads && \
               useradd -M -s /sbin/nologin sambauser && \
               echo "sambauser:password" | chpasswd && \
@@ -32,7 +32,7 @@ spec:
               cat <<EOF > /etc/samba/smb.conf
               [global]
                 workgroup = WORKGROUP
-                server string = Samba Server
+                server string = Photoprism Samba Server
                 security = user
                 map to guest = bad user
                 dns proxy = no
