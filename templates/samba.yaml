@@ -58,4 +58,4 @@ spec:
       volumes:
         - name: uploads
           persistentVolumeClaim:
-            claimName: photoprism-uploads
+            claimName: photoprism-import
