@@ -187,7 +187,7 @@ persistence:
     size: 25Gi
     storageClass: longhorn
     accessModes:
-      - ReadWriteOnce
+      - ReadWriteMany
     mountPath: /photoprism/import
 
 env:
