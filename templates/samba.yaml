@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: samba
+  name: photoprism-samba
   labels:
     app: samba
 spec:
