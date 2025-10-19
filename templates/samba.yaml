@@ -47,7 +47,8 @@ spec:
                 guest ok = no
                 valid users = sambauser
               EOF
-              service smbd start && tail -f /dev/null
+              # Run smbd in foreground (not via service)
+              /usr/sbin/smbd -FS --no-process-group
           ports:
             - containerPort: 445
               name: smb
