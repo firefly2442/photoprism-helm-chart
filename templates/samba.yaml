@@ -48,7 +48,7 @@ spec:
                 valid users = sambauser
               EOF
               # Run smbd in foreground (not via service)
-              /usr/sbin/smbd -FS --no-process-group
+              /usr/sbin/smbd --foreground --no-process-group
           ports:
             - containerPort: 445
               name: smb
