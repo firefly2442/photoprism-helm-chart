@@ -29,6 +29,8 @@ spec:
               useradd -M -s /sbin/nologin sambauser && \
               echo "sambauser:password" | chpasswd && \
               (echo password; echo password) | smbpasswd -a -s sambauser && \
+              chown -R sambauser:sambauser /data/uploads && \
+              chmod -R 0775 /data/uploads && \
               cat <<EOF > /etc/samba/smb.conf
               [global]
                 workgroup = WORKGROUP
