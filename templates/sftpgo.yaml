@@ -17,17 +17,12 @@ spec:
         - name: sftpgo
           image: drakkan/sftpgo:latest
           env:
-            - name: SFTPGO_USERS_JSON
-              value: |
-                [
-                  {
-                    "username": "photoprism",
-                    "password": "photoprism",
-                    "home_dir": "/data/uploads",
-                    "filesystem_type": "posix",
-                    "permissions": ["list", "download", "upload", "delete"]
-                  }
-                ]
+            - name: SFTPGO_DATA_PROVIDER__CREATE_DEFAULT_ADMIN
+              value: "true"
+            - name: SFTPGO_DEFAULT_ADMIN_USERNAME
+              value: "photoprism"
+            - name: SFTPGO_DEFAULT_ADMIN_PASSWORD
+              value: "photoprism"
           ports:
             - containerPort: 2022
               name: sftp
