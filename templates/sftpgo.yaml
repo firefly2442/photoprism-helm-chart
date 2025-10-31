@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photoprism-sftpgo
+  namespace: photoprism
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: photoprism-sftpgo
+  template:
+    metadata:
+      labels:
+        app: photoprism-sftpgo
+    spec:
+      containers:
+        - name: sftpgo
+          image: drakkan/sftpgo:latest
+          env:
+            - name: SFTPGO_USERS_JSON
+              value: |
+                [
+                  {
+                    "username": "photoprism",
+                    "password": "photoprism",
+                    "home_dir": "/data/uploads",
+                    "filesystem_type": "posix",
+                    "permissions": ["list", "download", "upload", "delete"]
+                  }
+                ]
+          ports:
+            - containerPort: 2022
+              name: sftp
+          volumeMounts:
+            - name: uploads
+              mountPath: /data/uploads
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: photoprism-import
