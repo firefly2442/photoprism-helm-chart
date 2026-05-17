@@ -5,6 +5,10 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "photoprism.fullname" $ }}-{{ $name }}
+  {{- if $pvc.labels }}
+  labels:
+    {{- toYaml $pvc.labels | nindent 4 }}
+  {{- end }}
 spec:
   accessModes:
   {{- range $pvc.accessModes }}
