@@ -191,6 +191,14 @@ persistence:
       - ReadWriteMany
     mountPath: /photoprism/import
 
+mariadb:
+  persistence:
+    enabled: true
+    size: 5Gi
+    storageClass: longhorn
+    accessModes:
+      - ReadWriteOnce
+
 env:
   - name: PHOTOPRISM_DATABASE_DRIVER
     value: "mysql"

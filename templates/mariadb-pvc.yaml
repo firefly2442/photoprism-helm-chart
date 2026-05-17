@@ -1,11 +1,21 @@
+{{- if .Values.mariadb.persistence.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "photoprism.fullname" . }}-mariadb
+  labels:
+    {{- with .Values.mariadb.persistence.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.mariadb.persistence.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   accessModes:
-    - ReadWriteOnce
+    {{- toYaml .Values.mariadb.persistence.accessModes | nindent 4 }}
   resources:
     requests:
-      storage: 20Gi
-  storageClassName: longhorn
+      storage: {{ .Values.mariadb.persistence.size }}
+  storageClassName: {{ .Values.mariadb.persistence.storageClass }}
+{{- end }}
